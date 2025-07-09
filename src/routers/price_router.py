@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
-from models.price_request import PriceRequest
-from services.price_service import PriceService
+from src.models.price_request import PriceRequest
+from src.services.price_service import PriceService
 
 router = APIRouter()
 price_service = PriceService()

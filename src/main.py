@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from routers.price_router import router as price_router
+from src.routers.price_router import router as price_router
 
 import os
 
