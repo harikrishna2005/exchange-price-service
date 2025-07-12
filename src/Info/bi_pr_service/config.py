@@ -1,6 +1,6 @@
 symbols = [
-    "BTCUSDT", "ETHUSDT", "BNBUSDT", "XRPUSDT", "ADAUSDT",
-    # Add up to 50 pairs here
+    "BTCUSDT", "ETHUSDT", "BNBUSDT"
+    # Add up to 50 pairs
 ]
 
 BINANCE_WS_URL = "wss://stream.binance.com:9443/stream?streams="

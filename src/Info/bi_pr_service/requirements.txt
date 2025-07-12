@@ -1,2 +1,7 @@
 websockets
 redis
+fastapi
+uvicorn[standard]
+aiofiles
+ujson
+
