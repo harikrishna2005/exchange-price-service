@@ -31,15 +31,11 @@ class ResponseWrapperMiddleware(BaseHTTPMiddleware):
 
         try:
             # logging.debug(f"[{trace_id}] Request ID: {trace_id}")
-            logging.info(f"[REQUEST] : {request.method} {request.url}")
+            logging.info(f"[INCOMING REQUEST] : {request.method} {request.url}")
             response = await call_next(request)
-            # wrapped = success_response(
-            #     message="Request processed successfully",
-            #     data=response.body,
-            #     trace_id=trace_id,
-            # )
-            logging.info(f"[RESPONSE] : Response status: {response.status_code}")
-            # return JSONResponse(content=jsonable_encoder(response), status_code=200)
+
+            logging.info(f"[INCOMING RESPONSE] : Response status: {response.status_code}")
+            # return JSONResponse(content=jsonable_encoder(wrapped), status_code=200)
             return response
 
             # if response.status_code == 200 and response.media_type == "application/json":
@@ -55,7 +51,7 @@ class ResponseWrapperMiddleware(BaseHTTPMiddleware):
             # return response
         except Exception as e:
             logging.exception(f"[{trace_id}] Unhandled Error: {str(e)}")
-            error = error_response(f"Internal Server Error: {str(e)}", trace_id)
+            error = error_response(f"Internal Server Error  :    {str(e)}", trace_id)
             return JSONResponse(content=jsonable_encoder(error), status_code=500)
         finally:
             logging.info(f"Request processing completed for trace_id: {trace_id}")

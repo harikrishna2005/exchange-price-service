@@ -101,3 +101,52 @@ docker run -d -p 8000:8000 --name streamer binance-streamer
 
 # Or use docker-compose:
 docker-compose up --build
+======================================
+
+
+from fastapi import FastAPI, Header, HTTPException
+from app.stream_manager import StreamManager
+from app.subscription_manager import SubscriptionManager
+import asyncio
+
+app = FastAPI()
+queue = asyncio.Queue()
+stream_manager = StreamManager(queue)
+subscription_manager = SubscriptionManager(stream_manager)
+
+
+@app.post("/subscribe")
+async def subscribe(pair: str, x_client_id: str = Header(...)):
+    if x_client_id in subscription_manager.pair_subscriptions[pair]:
+        return api_response(
+            status="ok",
+            message=f"Already subscribed: {pair} by client {x_client_id}",
+            data={"pair": pair}
+        )
+    await subscription_manager.subscribe(pair, x_client_id)
+    return api_response(
+        status="ok",
+        message=f"Subscribed to {pair}",
+        data={"pair": pair}
+    )
+
+
+@app.post("/unsubscribe")
+async def unsubscribe(pair: str, x_client_id: str = Header(...)):
+    if pair not in subscription_manager.pair_subscriptions:
+        return api_response(
+            status="ok",
+            message=f"No active subscription for {pair}",
+            data={"pair": pair}
+        )
+    await subscription_manager.unsubscribe(pair, x_client_id)
+    return api_response(
+        status="ok",
+        message=f"Unsubscribed from {pair}",
+        data={"pair": pair}
+    )
+
+
+@app.get("/status")
+async def status():
+    return {"subscriptions": subscription_manager.get_status()}

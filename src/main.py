@@ -53,8 +53,8 @@ app.add_middleware(ResponseWrapperMiddleware)
 # ******************************************************
 
 # app.add_event_handler("startup", lambda: print("Starting Exchange Price Service..."))
-@app.get("/", response_model=APIResponse)
-async def root():
+@app.get("/")
+async def default_path():
     logging.info(f"This is super logging")
     logging.debug(f"This is DEBUG logging")
     logging.warning(f"This is DEBUG logging")
@@ -71,5 +71,7 @@ async def root():
         message="Welcome to the Exchange Price Service!",
         data={"status": "Service is running"}
     )
+    # myresponse = {"keke": "PIKA"}
+    # raise ValueError("This is a test error to check the logging")
     return myresponse
     # return {"message": "Welcome to the Exchange udpated Price Service!"}
