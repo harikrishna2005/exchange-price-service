@@ -1,0 +1,6 @@
+# For batch splitting if needed
+batch_size = 25
+batches = [symbols[i:i + batch_size] for i in range(0, len(symbols), batch_size)]
+
+for batch in batches:
+    asyncio.create_task(binance_price_stream_for_batch(batch, queue))

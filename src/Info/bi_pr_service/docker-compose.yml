@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  binance-streamer:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./streamed_pairs.json:/app/streamed_pairs.json
+    depends_on:
+      - redis
+    environment:
+      - REDIS_HOST=redis
+      - BINANCE_WS_URL=wss://stream.binance.com:9443
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
